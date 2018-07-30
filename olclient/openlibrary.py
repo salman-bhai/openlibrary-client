@@ -928,7 +928,12 @@ class OpenLibrary(object):
             return self.session.post(url, data=data)
 
         response = _create_book_post(url, data=data)
+        print(url)
+        print(response.url)
+
         _olid = self._extract_olid_from_url(response.url, url_type="books")
+        
+        print(_olid)
         if _olid == u'add':
             raise ValueError('Creation failed, book may already exist!')
         return self.Edition.get(_olid)
@@ -954,7 +959,7 @@ class OpenLibrary(object):
     def get_type(olid):
         ol_types = {'OL..A': 'author', 'OL..M': 'book', 'OL..W': 'work'}
         kind = re.sub('\d+', '..', olid)
-        try:
+        try:    
             return ol_types[kind]
         except KeyError:
             raise ValueError("Unknown type for olid: %s" % olid)
